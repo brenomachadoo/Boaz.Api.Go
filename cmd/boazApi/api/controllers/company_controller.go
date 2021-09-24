@@ -1,11 +1,12 @@
 package controllers
 
 import (
-	"fmt"
-	"strconv"
-
 	"bmachado/Boaz.Api.Go/domain/entities"
 	dbMysqlDrive "bmachado/Boaz.Api.Go/infra/database/Mysql"
+	Services "bmachado/Boaz.Api.Go/services/companyService"
+	"fmt"
+	"log"
+	"strconv"
 
 	"github.com/gin-gonic/gin"
 )
@@ -21,6 +22,12 @@ func GetCompany(c *gin.Context) {
 		return
 	}
 
+	var companyEntity = entities.Company{CorporateName: ""}
+	responseCompany, errorService := Services.CompanyService.Add(&companyEntity)
+	if errorService != nil {
+		log.Fatal(errorService)
+	}
+	fmt.Print(responseCompany)
 	var companyResult = dbMysqlDrive.Crud().Find(entities.Company{}, newid, err)
 	fmt.Println(companyResult)
 
@@ -41,9 +48,9 @@ func GetCompany(c *gin.Context) {
 func AddCompany(c *gin.Context) {
 	db := dbMysqlDrive.GetDatabase()
 
-	var empresa entities.Company
+	var companyEntity *entities.Company
 
-	err := c.ShouldBindJSON(empresa)
+	err := c.ShouldBindJSON(companyEntity)
 	if err != nil {
 		c.JSON(400, gin.H{
 			"Error": "Error JSON convert: " + err.Error(),
@@ -51,7 +58,7 @@ func AddCompany(c *gin.Context) {
 		return
 	}
 
-	err = db.Create(empresa).Error
+	err = db.Create(companyEntity).Error
 
 	if err != nil {
 		c.JSON(400, gin.H{
@@ -60,7 +67,7 @@ func AddCompany(c *gin.Context) {
 		return
 	}
 
-	c.JSON(200, empresa)
+	c.JSON(200, companyEntity)
 }
 
 func GetCompanies(c *gin.Context) {

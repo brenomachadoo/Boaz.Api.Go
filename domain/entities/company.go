@@ -7,7 +7,7 @@ import (
 )
 
 type Company struct {
-	ID              uint           `json:"Id" gorm:"column:Id;not null;primaryKey;autoIncrement"`
+	Id              uint           `json:"Id" gorm:"column:Id;not null;primaryKey;autoIncrement"`
 	CorporateId     string         `json:"CorporateId" gorm:"column:CorporateId;size:14;index;not null;unique"`
 	CorporateName   string         `json:"CorporateName" gorm:"column:CorporateName;size:100;z;not null;unique"`
 	CorporateNameId string         `json:"CorporateNameId" gorm:"column:CorporateNameId;size:100;not null;unique"`

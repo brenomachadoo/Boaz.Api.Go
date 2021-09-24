@@ -1,6 +1,7 @@
 package server
 
 import (
+	"fmt"
 	"log"
 	"os"
 
@@ -18,10 +19,13 @@ type Server struct {
 func NewServerCompany() Server {
 	err := godotenv.Load(".env")
 	if err != nil {
-		log.Fatalf("Error loading .env file: " + err.Error())
+		fmt.Print("Error loading .env file: " + err.Error())
 	}
 
 	port := os.Getenv("PORT")
+	if port == "" {
+		port = "5000"
+	}
 	newServer := Server{
 		port:   port,
 		server: gin.New(),

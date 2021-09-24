@@ -21,8 +21,9 @@ func Crud() crudGeneric {
 }
 
 func (crud crudGeneric) Find(entity interface{}, newid int, err error) interface{} {
-	err = db.First(entity, newid).Error
-	if err != nil {
+	gormReult := db.First(&entity, newid)
+	if gormReult.Error != nil {
+		err = gormReult.Error
 		fmt.Println("Error: It was not possible find " + reflect.TypeOf(entity).String() + ": " + err.Error())
 		return entity
 	}
