@@ -10,9 +10,9 @@ type Provider interface {
 
 type Crud interface {
 	getDatabase()
-	Add() bool
+	Add(entity interface{}) (interface{}, error)
 	Delete() bool
-	Find(entity interface{}, newid int, err error) interface{}
+	Find(entity interface{}, id int) (interface{}, error)
 	FindAll() []interface{}
 	Update() bool
 	Insert() bool

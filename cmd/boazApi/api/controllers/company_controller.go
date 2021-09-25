@@ -4,8 +4,7 @@ import (
 	"bmachado/Boaz.Api.Go/domain/entities"
 	dbMysqlDrive "bmachado/Boaz.Api.Go/infra/database/Mysql"
 	Services "bmachado/Boaz.Api.Go/services/companyService"
-	"fmt"
-	"log"
+	"bmachado/Boaz.Api.Go/util"
 	"strconv"
 
 	"github.com/gin-gonic/gin"
@@ -22,27 +21,24 @@ func GetCompany(c *gin.Context) {
 		return
 	}
 
-	var companyEntity = entities.Company{CorporateName: ""}
-	responseCompany, errorService := Services.CompanyService.Add(&companyEntity)
+	companyResult, errorService := Services.NewCompanyService().Get(newid)
 	if errorService != nil {
-		log.Fatal(errorService)
+		util.LogFatal(errorService)
 	}
-	fmt.Print(responseCompany)
-	var companyResult = dbMysqlDrive.Crud().Find(entities.Company{}, newid, err)
-	fmt.Println(companyResult)
+	util.LogInfo(companyResult)
 
-	db := dbMysqlDrive.GetDatabase()
+	// db := dbMysqlDrive.GetDatabase()
 
-	var empresa entities.Company
-	err = db.First(empresa, newid).Error
-	if err != nil {
-		c.JSON(400, gin.H{
-			"Error": "It was not possible find company: " + err.Error(),
-		})
-		return
-	}
+	// var empresa entities.Company
+	// err = db.First(empresa, newid).Error
+	// if err != nil {
+	// 	c.JSON(400, gin.H{
+	// 		"Error": "It was not possible find company: " + err.Error(),
+	// 	})
+	// 	return
+	// }
 
-	c.JSON(200, empresa)
+	c.JSON(200, companyResult)
 }
 
 func AddCompany(c *gin.Context) {

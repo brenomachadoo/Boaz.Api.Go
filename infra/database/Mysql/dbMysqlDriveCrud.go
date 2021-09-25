@@ -2,6 +2,7 @@ package dbMysqlDrive
 
 import (
 	"fmt"
+	"log"
 	"reflect"
 
 	"bmachado/Boaz.Api.Go/infra/database"
@@ -20,12 +21,22 @@ func Crud() crudGeneric {
 	return crudGeneric{}
 }
 
-func (crud crudGeneric) Find(entity interface{}, newid int, err error) interface{} {
-	gormReult := db.First(&entity, newid)
-	if gormReult.Error != nil {
-		err = gormReult.Error
+func (crud crudGeneric) Find(entity interface{}, id int) (interface{}, error) {
+	gormReult := db.First(&entity, id)
+
+	err := gormReult.Error
+	if err != nil {
 		fmt.Println("Error: It was not possible find " + reflect.TypeOf(entity).String() + ": " + err.Error())
-		return entity
+		return entity, err
 	}
-	return entity
+	return entity, err
+}
+
+func (crud crudGeneric) Add(entity interface{}) (interface{}, error) {
+	err := db.Create(entity).Error
+	if err != nil {
+		log.Fatal(err.Error())
+	}
+
+	return entity, err
 }

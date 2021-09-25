@@ -1,11 +1,11 @@
 package dbMysqlDrive
 
 import (
-	"log"
 	"time"
 
 	"bmachado/Boaz.Api.Go/infra/database"
 	"bmachado/Boaz.Api.Go/infra/database/migrations"
+	"bmachado/Boaz.Api.Go/util"
 
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
@@ -39,7 +39,7 @@ func GetDatabase() *gorm.DB {
 func (driveConfig DatabaseProviderConfig) OpenConnection() {
 	dbGorm, err := gorm.Open(mysql.Open("root:root@tcp(127.0.0.1:3306)/BoazApiGo?charset=utf8mb4&parseTime=True&loc=Local"), &gorm.Config{})
 	if err != nil {
-		log.Fatal("Error: ", err)
+		util.LogFatal(err)
 		return
 	}
 
@@ -61,9 +61,6 @@ func (drive DatabaseProviderConfig) GetDatabase() *gorm.DB {
 	return gormDatabase
 }
 
-func MysqlTest() DatabaseProviderConfig {
-	//databaseProvider.OpenConnection()
-	//databaseProvider.Migration()
-	//databaseProvider.ClosedConnection()
+func MysqlConfig() DatabaseProviderConfig {
 	return databaseProvider
 }
