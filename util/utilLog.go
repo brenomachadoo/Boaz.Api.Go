@@ -9,10 +9,14 @@ import (
 	"github.com/joho/godotenv"
 )
 
+func LogInfoMsg(msg string) string {
+	return msg
+}
+
 func LogInfo(obj interface{}) {
 	err := godotenv.Load(".env")
 	if err != nil {
-		fmt.Print("Error loading .env file: " + err.Error())
+		fmt.Print("Error loading .env file")
 	}
 	var logActiveText = os.Getenv("LOG_SERVICE")
 	logActive, err := strconv.ParseBool(logActiveText)
