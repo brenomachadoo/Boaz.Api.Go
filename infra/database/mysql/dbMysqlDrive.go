@@ -32,8 +32,8 @@ func (drive DatabaseProviderConfig) Migration() {
 	migrations.RunMigration(gormDatabase)
 }
 
-func GetDatabase() *gorm.DB {
-	return gormDatabase
+func GetDatabase() (*gorm.DB, error) {
+	return gormDatabase, nil
 }
 
 func (driveConfig DatabaseProviderConfig) OpenConnection() {

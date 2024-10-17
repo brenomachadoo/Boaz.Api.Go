@@ -1,4 +1,4 @@
-package Services
+package services
 
 import "bmachado/Boaz.Api.Go/domain/entities"
 

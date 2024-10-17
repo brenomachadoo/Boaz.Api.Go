@@ -2,8 +2,8 @@ package controllers
 
 import (
 	"bmachado/Boaz.Api.Go/domain/entities"
-	dbMysqlDrive "bmachado/Boaz.Api.Go/infra/database/mysqlll"
-	Services "bmachado/Boaz.Api.Go/services/companyService"
+	dbMysqlDrive "bmachado/Boaz.Api.Go/infra/database/mysql"
+	"bmachado/Boaz.Api.Go/services/services"
 	"bmachado/Boaz.Api.Go/util"
 	"strconv"
 
@@ -21,7 +21,7 @@ func GetCompany(c *gin.Context) {
 		return
 	}
 
-	companyResult, errorService := Services.NewCompanyService().Get(newid)
+	companyResult, errorService := services.CompanyService().Get(newid)
 	if errorService != nil {
 		util.LogFatal(errorService)
 	}
@@ -42,7 +42,14 @@ func GetCompany(c *gin.Context) {
 }
 
 func AddCompany(c *gin.Context) {
-	db := dbMysqlDrive.GetDatabase()
+	db, dbError := dbMysqlDrive.GetDatabase()
+	if dbError != nil {
+		c.JSON(400, gin.H{
+			"Erro": "Error connection database" + dbError.Error(),
+		})
+
+		return
+	}
 
 	var companyEntity *entities.Company
 
@@ -67,17 +74,10 @@ func AddCompany(c *gin.Context) {
 }
 
 func GetCompanies(c *gin.Context) {
-	db := dbMysqlDrive.GetDatabase()
-	var empresas []entities.Company
-	err := db.Find(empresas).Error
-
-	if err != nil {
-		c.JSON(400, gin.H{
-			"Erro": "Error find company: " + err.Error(),
-		})
-
-		return
+	companies, errorService := services.CompanyService().GetAll()
+	if errorService != nil {
+		util.LogFatal(errorService)
 	}
 
-	c.JSON(200, empresas)
+	c.JSON(200, companies)
 }

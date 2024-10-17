@@ -15,14 +15,30 @@ type crudGeneric struct {
 }
 
 var db *gorm.DB
+var dbError error
 
 func Crud() crudGeneric {
-	db = GetDatabase()
+	db, dbError = GetDatabase()
+	if dbError != nil {
+
+	}
+
 	return crudGeneric{}
 }
 
 func (crud crudGeneric) Find(entity interface{}, id int) (interface{}, error) {
 	gormReult := db.First(&entity, id)
+
+	err := gormReult.Error
+	if err != nil {
+		fmt.Println("Error: It was not possible find " + reflect.TypeOf(entity).String() + ": " + err.Error())
+		return entity, err
+	}
+	return entity, err
+}
+
+func (crud crudGeneric) FindAll(entity []interface{}, id int) ([]interface{}, error) {
+	gormReult := db.Find(&entity)
 
 	err := gormReult.Error
 	if err != nil {

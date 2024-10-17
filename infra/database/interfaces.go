@@ -13,7 +13,7 @@ type Crud interface {
 	Add(entity interface{}) (interface{}, error)
 	Delete() bool
 	Find(entity interface{}, id int) (interface{}, error)
-	FindAll() []interface{}
+	FindAll() ([]interface{}, error)
 	Update() bool
 	Insert() bool
 }
