@@ -2,7 +2,7 @@ package controllers
 
 import (
 	"bmachado/Boaz.Api.Go/domain/entities"
-	dbMysqlDrive "bmachado/Boaz.Api.Go/infra/database/Mysql"
+	dbMysqlDrive "bmachado/Boaz.Api.Go/infra/database/mysqlll"
 	Services "bmachado/Boaz.Api.Go/services/companyService"
 	"bmachado/Boaz.Api.Go/util"
 	"strconv"

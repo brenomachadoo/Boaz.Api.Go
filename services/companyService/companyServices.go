@@ -4,7 +4,7 @@ import (
 	"bmachado/Boaz.Api.Go/domain/entities"
 	"bmachado/Boaz.Api.Go/util"
 
-	dbMysqlDrive "bmachado/Boaz.Api.Go/infra/database/Mysql"
+	dbMysqlDrive "bmachado/Boaz.Api.Go/infra/database/mysqlll"
 )
 
 type companyService struct {
